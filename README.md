@@ -1,5 +1,10 @@
 # kgacc — 全民K歌 TV 伴唱/原唱实时切换
 
+[![CI](https://github.com/toxicbeef/kgacc/actions/workflows/ci.yml/badge.svg)](https://github.com/toxicbeef/kgacc/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Android%20TV-3ddc84.svg)](#兼容性)
+[![Root](https://img.shields.io/badge/root-required-red.svg)](#已知限制)
+
 > 遥控器连按 3 次「菜单」键，在**伴唱**与**原唱**之间实时切换，MV 画面不中断、音画同步。
 
 <p align="center">

@@ -1,0 +1,46 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 检查 acc.js 语法
+        run: node --check src/acc.js
+
+      - name: 检查 shell 脚本语法
+        run: |
+          set -e
+          for f in src/*.sh scripts/*.sh; do
+            echo "checking $f"
+            bash -n "$f"
+          done
+
+      - name: 检查 install.bat 编码（必须 GBK + CRLF）
+        run: |
+          file scripts/install.bat
+          python3 - <<'PY'
+          data = open('scripts/install.bat','rb').read()
+          assert b'\r\n' in data, 'install.bat 必须是 CRLF'
+          data.decode('gbk')  # 必须是 GBK
+          print('install.bat OK (CRLF + GBK)')
+          PY
+
+      - name: 敏感信息扫描
+        run: |
+          if grep -rniE 'zhen2332|deadbeef\.bbroot|RPASS=' --exclude-dir=.git . ; then
+            echo "::error::发现敏感信息"
+            exit 1
+          fi
+          echo "无敏感信息"
