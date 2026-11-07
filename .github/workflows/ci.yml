@@ -39,7 +39,11 @@ jobs:
 
       - name: 敏感信息扫描
         run: |
-          if grep -rniE 'zhen2332|deadbeef\.bbroot|RPASS=' --exclude-dir=.git . ; then
+          # 关键词分片拼接，避免工作流自身被扫中
+          PAT1="zhe""n2332"
+          PAT2="dead""beef\\.bbroot"
+          PAT3="RP""ASS="
+          if grep -rniE "$PAT1|$PAT2|$PAT3" --exclude-dir=.git --exclude-dir=.github . ; then
             echo "::error::发现敏感信息"
             exit 1
           fi
