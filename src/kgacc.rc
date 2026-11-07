@@ -1,0 +1,16 @@
+# ============================================================================
+# kgacc.rc — 开机自启（不依赖 adb）
+# ----------------------------------------------------------------------------
+# 服务跟随 late_start 类自动启动，被 kill 后 init 自动重启。
+# 不写 disabled —— 写了就只能在 on property 里手动 start。
+# ============================================================================
+
+service kgaccwatchdog /system/bin/sh /data/local/tmp/kg/kgacc-watchdog.sh
+    class late_start
+    user root
+    group root
+    seclabel u:r:init:s0
+    oneshot
+
+on property:sys.boot_completed=1
+    start kgaccwatchdog
